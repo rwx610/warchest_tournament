@@ -1,0 +1,235 @@
+/* Основные стили */
+body {
+    font-family: Georgia, serif;
+    background-image: url('https://learn4joy.ru/wp-content/uploads/2023/04/1623930364_28-phonoteka_org-p-staroslavyanskii-uzor-pattern-krasivo-30.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: #564844;
+}
+
+/* Фиксированный хедер */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #2f4257; /* Цвет фона */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Контент в хедере */
+.header-content {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* Логотип */
+.logo {
+    height: 40px;
+}
+
+/* Центрирование логотипа */
+.logo-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Навигационные ссылки */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #c0a080;
+}
+
+
+/* Контейнер */
+.container {
+    width: 90%;
+    margin: 0px auto;
+    max-width: 880px;
+    background-color: rgb(243, 242, 236, 1);
+    border-radius: 5px;
+    padding: 100px 20px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 1);
+    position: relative;
+    overflow-x: auto; /* Добавлено для обеспечения горизонтальной прокрутки таблицы */
+}
+
+/* Логотип */
+.logo {
+    display: block;
+    margin: 25px auto 25px auto; /* Центрируем и добавляем отступ снизу */
+    width: 60px;
+    height: auto;
+}
+
+/* Обертка для заголовка */
+.title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Стили для скобок */
+.bracket-wrapper {
+    display: flex;
+}
+
+.bracket {
+    height: 40px;
+}
+
+.flipped {
+    transform: scaleX(-1);
+}
+
+/* Заголовки */
+.title {
+    font-size: 28px;
+    font-family: "Georgia", serif;
+    color: #564844;
+    text-align: center;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #564844;
+}
+
+/* Таблица */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f3f2ec;
+    table-layout: fixed; /* Добавлено для равномерного распределения столбцов */
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    word-wrap: break-word; /* Тексты в ячейках будут переноситься, чтобы не выходить за пределы */
+}
+
+thead {
+    background-color: #68839c;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #ffdfb5;
+}
+
+/* Расписание */
+.schedule-container {
+    margin-top: 20px;
+    display: none;
+}
+
+.match-details {
+    padding: 10px 0px 10px 0px;
+    background-color: #d2dbdb;
+    width: 100%;
+    max-width: 880px;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.match-details:hover {
+    background-color: #ffdfb5;
+}
+
+.match-details ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Кнопка для переключения расписания */
+.toggle-schedule {
+    display: block;
+    text-align: center;
+    color: #68b198;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.toggle-schedule:hover {
+    text-decoration: underline;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    /* Уменьшаем отступы внутри контейнера */
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    /* Логотип размещаем по центру сверху */
+    .logo {
+        /*position: absolute;*/
+        top: 0;
+        left: 50%;
+        transform: translateX(50%);
+        width: 50px;
+        height: auto;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    /* Таблица: добавляем горизонтальную прокрутку и уменьшаем шрифт */
+    table {
+        font-size: 12px;
+        width: 100%;
+        overflow-x: auto;
+        display: block; /* Делает таблицу блочной для прокрутки */
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    /* Убираем длинные строки, чтобы таблица не выходила за пределы экрана */
+    th, td {
+        word-wrap: break-word;
+        max-width: 150px; /* Ограничиваем ширину столбцов */
+    }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Турнирная таблица</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Фиксированный хедер -->
+<header class="main-header">
+    <div class="header-content">
+        <a href="https://github.com/warchesttournament/WCT25/blob/main/data/result.json" target="_blank" class="logo-link">
+            <img src="https://warchestonline.com/static/warchest_logo_hq-PYdcaaOu.png" class="logo" alt="War Chest Logo">
+        </a>
+        <nav class="nav-links"></nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="title-wrapper">
+        <span class="bracket-wrapper">
+            <img src="https://warchestonline.com/static/celtic_bracket-DF1mE86j.png" class="bracket" alt="Bracket Left">
+        </span>
+        <h1 class="title">War Chest Contest</h1>
+        <span class="bracket-wrapper left">
+            <img src="https://warchestonline.com/static/celtic_bracket-DF1mE86j.png" class="bracket flipped" alt="Bracket Right">
+        </span>
+    </div>
+
+    <!-- Группа A -->
+    <section id="groupA-section">
+        <h2>Group A</h2>
+        <table id="groupA">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>Pts</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <a href="javascript:void(0)" id="toggleA" class="toggle-schedule">Details</a>
+        <div id="scheduleA" class="schedule-container"></div>
+    </section>
+
+    <!-- Группа B -->
+    <section id="groupB-section">
+        <h2>Group B</h2>
+        <table id="groupB">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>Pts</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <a href="javascript:void(0)" id="toggleB" class="toggle-schedule">Details</a>
+        <div id="scheduleB" class="schedule-container"></div>
+    </section>
+
+    <!-- Плейофф -->
+    <section id="playoff-section">
+        <h2>Playoff</h2>
+
+        <h3>Semifinals</h3>
+        <table id="semifinal">
+            <thead>
+                <tr>
+                    <th>Player 1</th>
+                    <th>Score</th>
+                    <th>Player 2</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3>3rd Place</h3>
+        <table id="third">
+            <thead>
+                <tr>
+                    <th>Player 1</th>
+                    <th>Score</th>
+                    <th>Player 2</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3>Final</h3>
+        <table id="final">
+            <thead>
+                <tr>
+                    <th>Player 1</th>
+                    <th>Score</th>
+                    <th>Player 2</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
