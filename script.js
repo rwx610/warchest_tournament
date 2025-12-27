@@ -10,11 +10,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Проверяем существование элементов перед добавлением обработчиков
-    const toggleA = document.getElementById('toggleA');
-    const toggleB = document.getElementById('toggleB');
-    if (toggleA) toggleA.addEventListener('click', () => toggleSchedule('scheduleA'));
-    if (toggleB) toggleB.addEventListener('click', () => toggleSchedule('scheduleB'));
+    // Функция для создания кнопок Details
+    function createToggleButtons() {
+        // Создаем контейнеры для кнопок, если их нет
+        const groupAContainer = document.querySelector('#groupA');
+        const groupBContainer = document.querySelector('#groupB');
+        
+        if (!groupAContainer || !groupBContainer) return;
+        
+        // Добавляем кнопку для группы A
+        let toggleA = document.getElementById('toggleA');
+        if (!toggleA) {
+            toggleA = document.createElement('button');
+            toggleA.id = 'toggleA';
+            toggleA.textContent = 'Details Group A';
+            toggleA.className = 'toggle-btn';
+            // Вставляем после таблицы группы A
+            groupAContainer.parentNode.insertBefore(toggleA, groupAContainer.nextSibling);
+        }
+        
+        // Добавляем кнопку для группы B
+        let toggleB = document.getElementById('toggleB');
+        if (!toggleB) {
+            toggleB = document.createElement('button');
+            toggleB.id = 'toggleB';
+            toggleB.textContent = 'Details Group B';
+            toggleB.className = 'toggle-btn';
+            // Вставляем после таблицы группы B
+            groupBContainer.parentNode.insertBefore(toggleB, groupBContainer.nextSibling);
+        }
+        
+        // Добавляем обработчики
+        toggleA.addEventListener('click', () => toggleSchedule('scheduleA'));
+        toggleB.addEventListener('click', () => toggleSchedule('scheduleB'));
+        
+        // Изначально скрываем детали матчей
+        const scheduleA = document.getElementById('scheduleA');
+        const scheduleB = document.getElementById('scheduleB');
+        if (scheduleA) scheduleA.style.display = 'none';
+        if (scheduleB) scheduleB.style.display = 'none';
+    }
 
     // Fetch gviz/tq data
     fetch(API_URL)
@@ -51,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const playoff = data.filter(r => r.Group === 'PLAYOFF');
 
             // === Групповые таблицы ===
-            function renderGroupTable(group, tableId) { // Убрали scheduleId
+            function renderGroupTable(group, tableId) {
                 const tbody = document.querySelector(`#${tableId} tbody`);
                 if (!tbody) return;
                 
@@ -84,40 +119,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Группируем по M_ID
                 const matches = {};
                 rows.forEach(row => {
-                    if (row.M_ID && !matches[row.M_ID]) {
-                        matches[row.M_ID] = [];
-                    }
                     if (row.M_ID) {
+                        if (!matches[row.M_ID]) {
+                            matches[row.M_ID] = [];
+                        }
                         matches[row.M_ID].push(row);
                     }
                 });
 
                 // Отображаем каждый матч
-                Object.entries(matches).forEach(([matchId, players]) => {
-                    if (players.length < 2) return;
-                    
-                    const [p1, p2] = players;
-                    const g1_1 = p1.G1 ?? 0;
-                    const g1_2 = p2.G1 ?? 0;
-                    const g2_1 = p1.G2 ?? 0;
-                    const g2_2 = p2.G2 ?? 0;
+                Object.entries(matches)
+                    .sort((a, b) => a[0].localeCompare(b[0])) // Сортируем по номеру матча
+                    .forEach(([matchId, players]) => {
+                        if (players.length < 2) return;
+                        
+                        const [p1, p2] = players;
+                        const g1_1 = p1.G1 ?? 0;
+                        const g1_2 = p2.G1 ?? 0;
+                        const g2_1 = p1.G2 ?? 0;
+                        const g2_2 = p2.G2 ?? 0;
 
-                    const matchDiv = document.createElement('div');
-                    matchDiv.className = 'match-details';
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match-details';
 
-                    matchDiv.innerHTML = `
-                        <p><strong>Match ${matchId}: ${p1.Player || ''} ⚔️ ${p2.Player || ''}</strong></p>
-                        <ul>
-                            <li>${g1_1} : ${g1_2}</li>
-                            <li>${g2_1} : ${g2_2}</li>
-                            ${p1.G3 !== null ? `<li>${p1.G3 ?? 0} : ${p2.G3 ?? 0}</li>` : ''}
-                        </ul>
-                    `;
+                        matchDiv.innerHTML = `
+                            <p><strong>Match ${matchId}: ${p1.Player || ''} ⚔️ ${p2.Player || ''}</strong></p>
+                            <ul>
+                                <li>Set 1: ${g1_1} : ${g1_2}</li>
+                                <li>Set 2: ${g2_1} : ${g2_2}</li>
+                                ${p1.G3 !== null ? `<li>Set 3: ${p1.G3 ?? 0} : ${p2.G3 ?? 0}</li>` : ''}
+                            </ul>
+                        `;
 
-                    container.appendChild(matchDiv);
-                });
+                        container.appendChild(matchDiv);
+                    });
             }
 
+            // Рендерим данные
             renderGroupTable(groupA, 'groupA');
             renderGroupTable(groupB, 'groupB');
 
@@ -154,10 +192,12 @@ document.addEventListener("DOMContentLoaded", () => {
             renderPlayoffTable('semifinal', ['SF1','SF2']);
             renderPlayoffTable('third', ['3RD']);
             renderPlayoffTable('final', ['F']);
+            
+            // Создаем кнопки после рендеринга данных
+            createToggleButtons();
         })
         .catch(err => {
             console.error('Ошибка загрузки данных:', err);
-            // Можно добавить отображение ошибки пользователю
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error';
             errorDiv.textContent = 'Ошибка загрузки данных. Пожалуйста, обновите страницу.';
