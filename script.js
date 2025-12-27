@@ -29,9 +29,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return obj;
             });
 
-            // Разделяем на группы и плейофф
-            const groupA = data.filter(r => r.Group === 'A');
-            const groupB = data.filter(r => r.Group === 'B');
+            
+            // Таблицы (standings)
+            const groupA = data.filter(r => r.Group === 'A' && r.Rank !== null);
+            const groupB = data.filter(r => r.Group === 'B' && r.Rank !== null);
+
+            // Матчи (details)
+            const groupMatchesA = data.filter(r => /^A\d+$/.test(r.M_ID));
+            const groupMatchesB = data.filter(r => /^B\d+$/.test(r.M_ID));
+
+            // Плейофф
             const playoff = data.filter(r => r.Group === 'PLAYOFF');
 
             // === Групповые таблицы ===
@@ -56,11 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     tbody.appendChild(row);
                 });
 
-                // === Расписание матчей Details ===
-                const scheduleDiv = document.getElementById(scheduleId);
-                scheduleDiv.innerHTML = '';
-                const mIDs = [...new Set(group.map(r => r.M_ID))];
-
                 mIDs.forEach(id => {
                     const matchRows = group.filter(r => r.M_ID === id);
                     const matchDiv = document.createElement('div');
@@ -75,9 +77,42 @@ document.addEventListener("DOMContentLoaded", () => {
                     scheduleDiv.appendChild(matchDiv);
                 });
             }
+            
+            function renderGroupDetails(rows, scheduleId) {
+                const container = document.getElementById(scheduleId);
+                container.innerHTML = '';
 
-            renderGroupTable(groupA, 'groupA', 'scheduleA');
-            renderGroupTable(groupB, 'groupB', 'scheduleB');
+                for (let i = 0; i < rows.length; i += 2) {
+                    const p1 = rows[i];
+                    const p2 = rows[i + 1];
+                    if (!p2) break;
+
+                    const g1_1 = p1.G1 ?? 0;
+                    const g1_2 = p2.G1 ?? 0;
+                    const g2_1 = p1.G2 ?? 0;
+                    const g2_2 = p2.G2 ?? 0;
+
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'match-details';
+
+                    matchDiv.innerHTML = `
+                        <p><strong>${p1.Player} ⚔️ ${p2.Player}</strong></p>
+                        <ul>
+                            <li>${g1_1} : ${g1_2}</li>
+                            <li>${g2_1} : ${g2_2}</li>
+                        </ul>
+                    `;
+
+                    container.appendChild(matchDiv);
+                }
+            }
+
+            renderGroupTable(groupA, 'groupA');
+            renderGroupTable(groupB, 'groupB');
+
+            renderGroupDetails(groupMatchesA, 'scheduleA');
+            renderGroupDetails(groupMatchesB, 'scheduleB');
+
 
             // === Плейофф ===
             function renderPlayoffTable(stageId, mIDs) {
